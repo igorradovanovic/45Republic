@@ -20,4 +20,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	
+	compile group: 'org.apache.cxf', name: 'cxf-core', version: '3.2.4'
+    compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.2.4'
+    compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.2.4'
+    compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxrs', version: '3.2.4'
+     compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '6.2.1.jre8'
 }
