@@ -30,13 +30,15 @@ public class BeneficiaryController {
 	@RequestMapping(value = "/beneficiarys", method = RequestMethod.GET)
 	ResponseEntity<?> loadAll() {
 		List<Beneficiary> res = this.benService.loadAll();
-		return new ResponseEntity<Object>(res, HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseWrapper(res), HttpStatus.OK);
 	}
 	
 
 	@RequestMapping(value = "/beneficiarysByApr", method = RequestMethod.POST)
 	ResponseEntity<?> addBeneficiary(@RequestBody BeneficiaryRetrieveDataApr beneficiaryRetrieveDataApr)
 			throws Exception {
+		
+
 		
 		System.out.println("USAO SAMN!");
 		if (beneficiaryRetrieveDataApr.getBrdTzpeField() != null && beneficiaryRetrieveDataApr.getBrdTzpeField() < 8) {
@@ -46,10 +48,10 @@ public class BeneficiaryController {
 			Beneficiary beneficiary = service.getData(beneficiaryRetrieveDataApr.getBrdRegistrationNumberField().trim(),
 					beneficiaryRetrieveDataApr.getBrdTzpeField());
 
-			return new ResponseEntity<>(beneficiary, HttpStatus.CREATED);
+			return new ResponseEntity<>(new ResponseWrapper(beneficiary), HttpStatus.CREATED);
 
 		} else {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ResponseWrapper(null), HttpStatus.BAD_REQUEST);
 		}
 
 	}

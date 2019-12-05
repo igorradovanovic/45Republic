@@ -1,41 +1,53 @@
 package com.base.Republic.config;
 
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.base.Republic.security.Http401UnauthorizedEntryPoint;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
-	
-	@Autowired
-	private UserDetailsService userDetailsService;
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private Http401UnauthorizedEntryPoint authenticationEntryPoint;
-
-	@Autowired
-	private AuthenticationManagerBuilder authenticationManagerBuilder;
-	
-	
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http
+		.authorizeRequests()
+			.antMatchers("/api/**")
+				.permitAll()
+					.anyRequest()
+						.authenticated().and().cors().and().csrf().disable();
+	}
 
-		http.authorizeRequests().antMatchers("/api/**").permitAll()
-        .antMatchers("/api/**").hasRole("USER")
-        .anyRequest().authenticated() 
-        .and().formLogin().disable();
+	@Bean
+	@Override
+	public UserDetailsService userDetailsService() {
+		UserDetails user = User.withDefaultPasswordEncoder().username("user").password("password").roles("USER")
+				.build();
+
+		return new InMemoryUserDetailsManager(user);
 	}
 	
+	 @Bean
+	    CorsConfigurationSource corsConfigurationSource() {
+	        CorsConfiguration configuration = new CorsConfiguration();
+	        configuration.setAllowedOrigins(Arrays.asList("*"));
+	        configuration.setAllowedMethods(Arrays.asList("*"));
+	        configuration.setAllowedHeaders(Arrays.asList("*"));
+	        configuration.setAllowCredentials(true);
+	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	        source.registerCorsConfiguration("/**", configuration);
+	        return source;
+	    }
 
 }
