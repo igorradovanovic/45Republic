@@ -1,6 +1,7 @@
 package com.base.Republic.wsclient;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,6 +62,7 @@ public class ListApServiceClient {
 	public Beneficiary getData(String maticniBrojField,
 			Integer ithemType) throws Exception {
 		Beneficiary result = new Beneficiary();
+		List<Beneficiary> listaOgranaka = new ArrayList<>();
 		
 		try {
 			
@@ -114,6 +116,7 @@ public class ListApServiceClient {
 
 								// case item 1 !!!
 								result = this.retrieveBeneficiaryDataItem1("CREATE",result, grupa, polje);
+								listaOgranaka = this.retrieveOgranciDataItem1(listaOgranaka, ogranak, grupa, polje);
 								
 
 							}
@@ -435,6 +438,122 @@ public class ListApServiceClient {
 			}
 		}
 		return beneficiary;
+	}
+	
+	public List<Beneficiary> retrieveOgranciDataItem1(List<Beneficiary> listaOgranaka, Beneficiary ogranak, TGrupa grupa, TPolje polje) {
+
+
+		if (polje.getNazivField().equals("NazivOgranka") && grupa.getIdentifikatorGrupeField().equals("1031")) {
+			
+
+				ogranak.setBenNameLongLegal(polje.getNazivField().equals("NazivOgranka")
+						&& grupa.getIdentifikatorGrupeField().equals("1031") ? polje.getVrednostField() : null);
+				
+				ogranak.setBenNameLong(polje.getNazivField().equals("NazivOgranka")
+						&& grupa.getIdentifikatorGrupeField().equals("1031") ? polje.getVrednostField() : null);
+				
+//				ogranak.setBenNameLongLat(polje.getNazivField().equals("NazivOgranka")
+//						&& grupa.getIdentifikatorGrupeField().equals("1031") ? polje.getVrednostField() : null);
+				
+				ogranak.setBenNameShort(polje.getNazivField().equals("NazivOgranka")
+						&& grupa.getIdentifikatorGrupeField().equals("1031") ? polje.getVrednostField() : null);
+				
+				ogranak.setBenNameShortLegal(polje.getNazivField().equals("NazivOgranka")
+						&& grupa.getIdentifikatorGrupeField().equals("1031") ? polje.getVrednostField() : null);
+			
+		}
+		if (polje.getNazivField().equals("NazivUlice") && grupa.getIdentifikatorGrupeField().equals("1031")) {
+			
+
+				ogranak.setBenAddressLegal(
+						polje.getNazivField().equals("NazivUlice") && grupa.getIdentifikatorGrupeField().equals("1031")
+								? polje.getVrednostField()
+								: null);
+//				ogranak.setBenAddress(ogranak.getBenAddressLegal());
+			
+		}
+
+		if (polje.getNazivField().equals("NazivUliceLatinica") && grupa.getIdentifikatorGrupeField().equals("1031")) {
+			
+
+//				ogranak.setBenAdressLegalLat(
+//						polje.getNazivField().equals("NazivUlice") && grupa.getIdentifikatorGrupeField().equals("1031")
+//								? polje.getVrednostField()
+//								: null);
+//				ogranak.setBenAddressLat(ogranak.getBenAdressLegalLat());
+			
+		}
+
+		if (polje.getNazivField().equals("PostanskiBroj") && grupa.getIdentifikatorGrupeField().equals("1031")
+				&& (!polje.getVrednostField().isEmpty())) {
+			
+
+//				ogranak.setBenZipLegal(polje.getNazivField().equals("PostanskiBroj")
+//						&& grupa.getIdentifikatorGrupeField().equals("1031") && !polje.getVrednostField().isEmpty()
+//								? Long.parseLong(polje.getVrednostField())
+//								: null);
+//				ogranak.setBenZip(ogranak.getBenZipLegal());
+			
+		}
+		if (polje.getNazivField().equals("PostanskiAdresniKod") && grupa.getIdentifikatorGrupeField().equals("1031")) {
+			
+
+//				ogranak.setBenPakLegal(polje.getNazivField().equals("PostanskiAdresniKod")
+//						&& grupa.getIdentifikatorGrupeField().equals("1031") ? polje.getVrednostField() : null);
+//				ogranak.setBenPak(ogranak.getBenPakLegal());
+			
+		}
+		if (polje.getNazivField().equals("IdentifikatorMesta_NazivMestaCirilicni")
+				&& grupa.getIdentifikatorGrupeField().equals("1031")) {
+			
+
+//				ogranak.setBenCityLegal(polje.getNazivField().equals("IdentifikatorMesta_NazivMestaCirilicni")
+//						&& grupa.getIdentifikatorGrupeField().equals("1031") ? polje.getVrednostField() : null);
+//				ogranak.setBenCity(ogranak.getBenCityLegal());
+			
+		}
+		if (polje.getNazivField().equals("IdentifikatorMesta_NazivMestaLatinicni")
+				&& grupa.getIdentifikatorGrupeField().equals("1031")) {
+			
+//
+//				ogranak.setBenCityLegalLat(polje.getNazivField().equals("IdentifikatorMesta_NazivMestaLatinicni")
+//						&& grupa.getIdentifikatorGrupeField().equals("1031") ? polje.getVrednostField() : null);
+//				ogranak.setBenCityLat(ogranak.getBenCityLegal());
+			
+		}
+		if (polje.getNazivField().equals("IdentifikatorMesta_SifraOpstine")
+				&& grupa.getIdentifikatorGrupeField().equals("1031")) {
+			
+
+//				ogranak.setBenMunicipality(!polje.getVrednostField().isEmpty() ? Long.parseLong(polje.getVrednostField())
+//								: null);
+
+			
+
+		}
+		
+		if (polje.getNazivField().equals("JedinstveniIdentifikator") && grupa.getIdentifikatorGrupeField().equals("1031")) {
+			
+//			ogranak.setBenRegistrationNumber(polje.getVrednostField());
+//			ogranak.setBenRegistrationNumberLegal(polje.getVrednostField());
+			System.out.println("Kreirao sam novi OGRANAK ============>>>>>>>>>>>");
+			
+			// kreacija novog beneficiary-a, dodeljivanje inicijalnog statusa 50000-INICIRAN
+//			StatusDTO sta = new StatusDTO();
+//			Long sta_id = (long) 50000;
+//			sta.setStaId(sta_id);
+//			ogranak.setStatus(sta);
+//			ogranak.setBenUndefined(false);
+
+			// setovanje paramterna ben_type koji u slucaju maticne firme predstavlja
+			ogranak.setBenType("Огранак");
+
+			// popunjavanje liste ogranaka
+			listaOgranaka.add(ogranak);
+			
+		}
+		return listaOgranaka;
+
 	}
 
 }
