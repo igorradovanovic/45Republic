@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.base.Republic.config.WebServiceConfig;
 import com.base.Republic.model.Beneficiary;
 import com.base.Republic.model.BeneficiaryRetrieveDataApr;
+import com.base.Republic.model.ListApResponse;
 import com.base.Republic.service.BeneficiaryService;
 import com.base.Republic.wsclient.ListApServiceClient;
 
@@ -45,10 +46,13 @@ public class BeneficiaryController {
 
 			/// INICIJALIZACIJA LISTAP APR SERVISA I REQUEST
 			ListApServiceClient service = webServiceConfig.initializeListApServiceClient();
-			Beneficiary beneficiary = service.getData(beneficiaryRetrieveDataApr.getBrdRegistrationNumberField().trim(),
+			ListApResponse responseSOAP = service.getData(beneficiaryRetrieveDataApr.getBrdRegistrationNumberField().trim(),
 					beneficiaryRetrieveDataApr.getBrdTzpeField());
+			
+			Beneficiary ben = responseSOAP.getBeneficiary();
+			List<Beneficiary>listaOgranaka = responseSOAP.getListaOgranaka();
 
-			return new ResponseEntity<>(new ResponseWrapper(beneficiary), HttpStatus.CREATED);
+			return new ResponseEntity<>(new ResponseWrapper(ben), HttpStatus.CREATED);
 
 		} else {
 			return new ResponseEntity<>(new ResponseWrapper(null), HttpStatus.BAD_REQUEST);

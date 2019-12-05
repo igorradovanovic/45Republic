@@ -15,6 +15,7 @@ import org.apache.cxf.ws.policy.PolicyInterceptorProviderRegistry;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.base.Republic.model.Beneficiary;
+import com.base.Republic.model.ListApResponse;
 import com.base.Republic.wsclient.data.apws.IListaAp;
 import com.base.Republic.wsclient.data.apws.ListaAp;
 import com.base.Republic.wsclient.data.response.*;
@@ -59,9 +60,12 @@ public class ListApServiceClient {
 		return port;
 	}
 	
-	public Beneficiary getData(String maticniBrojField,
+	public ListApResponse getData(String maticniBrojField,
 			Integer ithemType) throws Exception {
+		
+		ListApResponse lap = new ListApResponse();
 		Beneficiary result = new Beneficiary();
+		
 		List<Beneficiary> listaOgranaka = new ArrayList<>();
 		
 		try {
@@ -182,9 +186,13 @@ public class ListApServiceClient {
 	
 		}catch (WebServiceException e) {
 			e.printStackTrace();
+			lap.setErrorDescription(e.getMessage().toString());
 			throw new Exception("errorDescription= " + e.getMessage().toString());
 		}
-		return result;
+		
+		lap.setBeneficiary(result);
+		lap.setListaOgranaka(listaOgranaka);
+		return lap;
 	}
 	
 	public Beneficiary retrieveBeneficiaryDataItem1(String mode, Beneficiary beneficiary, TGrupa grupa,
